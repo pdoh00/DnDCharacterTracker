@@ -1,0 +1,3 @@
+Player creates new character
+Player deletes existing character
+Player updates character data

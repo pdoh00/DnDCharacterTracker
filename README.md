@@ -1,0 +1,1 @@
+Creating a D&D Adventurers League character tracking web service using "Clean Architecture" guidelines as described at http://manuel.kiessling.net/2012/09/28/applying-the-clean-architecture-to-go-applications/

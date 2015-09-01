@@ -1,0 +1,208 @@
+.image {
+    position: absolute;
+    width: 100%
+}
+
+#index_heading {
+    position: absolute;
+    top: 50px;
+    left: 460px;
+    width: 100%;
+}
+
+#index_heading span { 
+   color: white; 
+   font: bold 48px/90px Helvetica, Sans-Serif; 
+   letter-spacing: -1px;  
+   background: rgb(0, 0, 0); /* fallback color */
+   background: rgba(0, 0, 0, 0.2);
+   padding: 10px; 
+}
+
+#login_form {
+    position: absolute;
+    margin: 20px 0;
+    top: 195px;
+    left: 460px;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+#char_name {
+    position: absolute;
+    top: 205px;
+    left: 195px;
+    color: orange;
+    font-size: 36px;
+}
+
+#class_level {
+    position: absolute;
+    top: 115px;
+    left: 580px;
+    color: orange;
+    font-size: 36px;
+}
+
+#background {
+    position: absolute;
+    top: 115px;
+    left: 800px;
+    color: orange;
+    font-size: 36px;
+}
+
+#playerName {
+    position: absolute;
+    top: 115px;
+    left: 1100px;
+    color: orange;
+    font-size: 36px;
+}
+
+#faction {
+    position: absolute;
+    top: 115px;
+    left: 1400px;
+    color: orange;
+    font-size: 36px;
+}
+
+#race {
+    position: absolute;
+    top: 195px;
+    left: 580px;
+    color: orange;
+    font-size: 36px;
+}
+
+#alignment {
+    position: absolute;
+    top: 195px;
+    left: 800px;
+    color: orange;
+    font-size: 36px;
+}
+
+#xp {
+    position: absolute;
+    top: 195px;
+    left: 1100px;
+    color: orange;
+    font-size: 36px;
+}
+
+#dci {
+    position: absolute;
+    top: 195px;
+    left: 1400px;
+    color: orange;
+    font-size: 36px;
+}
+
+#strength {
+    position: absolute;
+    top: 390px;
+    left: 135px;
+    color: orange;
+    font-size: 56px;
+}
+
+#dexterity {
+    position: absolute;
+    top: 590px;
+    left: 135px;
+    color: orange;
+    font-size: 56px;
+}
+
+#constitution {
+    position: absolute;
+    top: 790px;
+    left: 135px;
+    color: orange;
+    font-size: 56px;
+}
+
+#intelligence {
+    position: absolute;
+    top: 990px;
+    left: 135px;
+    color: orange;
+    font-size: 56px;
+}
+
+#wisdom {
+    position: absolute;
+    top: 1190px;
+    left: 135px;
+    color: orange;
+    font-size: 56px;
+}
+
+#charisma {
+    position: absolute;
+    top: 1390px;
+    left: 135px;
+    color: orange;
+    font-size: 56px;
+}
+
+@media print {
+    * {
+        background: transparent !important;
+        color: black !important;
+        text-shadow: none !important;
+        filter: none !important;
+        -ms-filter: none !important;
+    }
+    /* Black prints faster: sanbeiji.com/archives/953 */
+    p a,
+    p a:visited {
+        color: #444 !important;
+        text-decoration: underline;
+    }
+    p a[href]:after {
+        content: " (" attr(href) ")";
+    }
+    abbr[title]:after {
+        content: " (" attr(title) ")";
+    }
+    .ir a:after,
+    a[href^="javascript:"]:after,
+    a[href^="#"]:after {
+        content: "";
+    }
+    /* Don't show links for images, or javascript/internal links */
+    pre,
+    blockquote {
+        border: 1px solid #999;
+        page-break-inside: avoid;
+    }
+    thead {
+        display: table-header-group;
+    }
+    /* css-discuss.incutio.com/wiki/Printing_Tables */
+    tr,
+    img {
+        page-break-inside: avoid;
+    }
+    @page {
+        margin: 0.5cm;
+    }
+    p,
+    h2,
+    h3 {
+        orphans: 3;
+        widows: 3;
+    }
+    h2,
+    h3 {
+        page-break-after: avoid;
+    }
+    .hide-on-print {
+        display: none !important;
+    }
+    .print-only {
+        display: block !important;
+    }
+}
