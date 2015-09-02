@@ -1,17 +1,22 @@
+// Package interfaces -
+// The code does what it takes to make the fact that an HTTP call arrived
+// unrecognizable for the use cases layer.
 package interfaces
 
 import (
+	"fmt"
 	"html/template"
 	"net/http"
 	"strconv"
 
+	"github.com/gorilla/mux"
 	"github.com/pdoh00/dndAdventuresLeague/domain"
 )
 
 // CharacterInteractor defines methods available on the CharacterInteractor
 type CharacterInteractor interface {
 	Add(email string, character domain.Character) error
-	Character(characterID int) domain.Character
+	RetrieveCharacter(characterID int) domain.Character
 }
 
 // WebServiceHandler is used to handle all http requests
@@ -20,12 +25,21 @@ type WebServiceHandler struct {
 	Templates           *template.Template
 }
 
-// ShowCharacter handles a request to show character data
-func (handler WebServiceHandler) ShowCharacter(w http.ResponseWriter, r *http.Request) {
-	characterID, err := strconv.Atoi(r.FormValue("characterID"))
+// DisplayLoginPage handles a request for the login page
+func (handler *WebServiceHandler) DisplayLoginPage(w http.ResponseWriter, r *http.Request) {
+	handler.Templates.ExecuteTemplate(w, "index.html", nil)
+}
+
+// DisplayCharacter handles a request to show character data
+func (handler *WebServiceHandler) DisplayCharacter(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+
+	characterID, err := strconv.Atoi(vars["characterID"])
+	fmt.Printf("Display character with id %d", characterID)
 	if err != nil {
 		panic(err)
 	}
-	character := handler.CharacterInteractor.Character(characterID)
-	handler.Templates.ExecuteTemplate(w, "/templates/character.html", character)
+	character := handler.CharacterInteractor.RetrieveCharacter(characterID)
+	fmt.Printf("Character retrieved with name %s", character.CharacterName)
+	handler.Templates.ExecuteTemplate(w, "character.html", character)
 }

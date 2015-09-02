@@ -10,7 +10,6 @@ type PlayerRepository interface {
 type CharacterRepository interface {
 	Store(character Character) error
 	Retire(characterID int) error
-	FindByPlayerID(playerID int) []Character
 	FindByID(characterID int) Character
 	FindByDCI(dci string) []Character
 }

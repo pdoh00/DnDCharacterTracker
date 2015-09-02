@@ -35,10 +35,18 @@
     font-size: 36px;
 }
 
-#class_level {
+#class {
     position: absolute;
     top: 115px;
     left: 580px;
+    color: orange;
+    font-size: 36px;
+}
+
+#level {
+    position: absolute;
+    top: 115px;
+    left: 605px;
     color: orange;
     font-size: 36px;
 }

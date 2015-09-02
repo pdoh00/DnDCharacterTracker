@@ -38,8 +38,8 @@ func (c *CharacterInteractor) Add(email string, character domain.Character) erro
 	return nil
 }
 
-// Character returns the requested character data
-func (c *CharacterInteractor) Character(characterID int) domain.Character {
+// RetrieveCharacter returns the requested character data
+func (c *CharacterInteractor) RetrieveCharacter(characterID int) domain.Character {
 	return c.CharacterRepository.FindByID(characterID)
 }
 

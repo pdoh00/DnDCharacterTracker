@@ -22,3 +22,7 @@ _testmain.go
 *.exe
 *.test
 *.prof
+
+#Data
+*.sqlite
+*.db
