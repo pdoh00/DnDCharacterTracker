@@ -46,8 +46,6 @@ func (repo *DBCharacterRepo) Store(character domain.Character) error {
 			character.Wisdom,
 			character.Charisma)
 
-	// sqlStmt := fmt.Sprintf("INSERT INTO characters (character_name) VALUES ('%s')", character.CharacterName)
-	fmt.Println(sqlStmt)
 	_, err := repo.dbHandler.Execute(sqlStmt)
 	if err != nil {
 		return err
@@ -59,19 +57,20 @@ func (repo *DBCharacterRepo) Store(character domain.Character) error {
 func (repo *DBCharacterRepo) FindByDCI(dci string) []domain.Character {
 	sqlStmt := fmt.Sprintf("SELECT * FROM characters WHERE dci = %s", dci)
 	row := repo.dbHandler.Query(sqlStmt)
-
+	defer row.Close()
 	var characters []domain.Character
 	for row.Next() {
-		characters = append(characters, parseCharacter(row))
+		characters = append(characters, parseCharacter(&row))
 	}
 	return characters
 }
 
 // FindByID finds a character by ID
 func (repo *DBCharacterRepo) FindByID(id int) domain.Character {
-	sqlStmt := fmt.Sprintf("SELECT * FROM characters WHERE id = %d", id)
+	sqlStmt := fmt.Sprintf("SELECT id,characterName,class,level,background,playerName,faction,race,alignment,xp,dci,strength,dexterity,constitution,intelligence,wisdom,charisma FROM characters WHERE id = %d", id)
 	row := repo.dbHandler.Query(sqlStmt)
-
+	defer row.Close()
+	row.Next()
 	return parseCharacter(row)
 }
 
@@ -99,42 +98,41 @@ func parseCharacter(row Row) domain.Character {
 	var wisdom int
 	var charisma int
 
-	for row.Next() {
-		row.Scan(&id,
-			&characterName,
-			&class,
-			&level,
-			&background,
-			&playerName,
-			&faction,
-			&race,
-			&alignment,
-			&xp,
-			&dci,
-			&strength,
-			&dexterity,
-			&constitution,
-			&intelligence,
-			&wisdom,
-			&charisma)
+	row.Scan(&id,
+		&characterName,
+		&class,
+		&level,
+		&background,
+		&playerName,
+		&faction,
+		&race,
+		&alignment,
+		&xp,
+		&dci,
+		&strength,
+		&dexterity,
+		&constitution,
+		&intelligence,
+		&wisdom,
+		&charisma)
 
-		return domain.Character{ID: id,
-			CharacterName: characterName,
-			Class:         class,
-			Level:         level,
-			Background:    background,
-			PlayerName:    playerName,
-			Faction:       faction,
-			Race:          race,
-			Alignment:     alignment,
-			XP:            xp,
-			DCI:           dci,
-			Strength:      strength,
-			Dexterity:     dexterity,
-			Constitution:  constitution,
-			Intelligence:  intelligence,
-			Wisdom:        wisdom,
-			Charisma:      charisma}
-	}
-	return domain.Character{}
+	character := domain.Character{ID: id,
+		CharacterName: characterName,
+		Class:         class,
+		Level:         level,
+		Background:    background,
+		PlayerName:    playerName,
+		Faction:       faction,
+		Race:          race,
+		Alignment:     alignment,
+		XP:            xp,
+		DCI:           dci,
+		Strength:      strength,
+		Dexterity:     dexterity,
+		Constitution:  constitution,
+		Intelligence:  intelligence,
+		Wisdom:        wisdom,
+		Charisma:      charisma}
+
+	return character
 }

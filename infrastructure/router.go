@@ -1,6 +1,7 @@
 package infrastructure
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 
@@ -46,7 +47,9 @@ func NewRouter(routes []interfaces.Route) *mux.Router {
 }
 
 func prefixHandler(rootdir string, routePrefix string) http.Handler {
+	dir := http.Dir(rootdir + routePrefix)
+	fmt.Println(dir)
 	return http.
 		StripPrefix(routePrefix,
-		http.FileServer(http.Dir(rootdir+routePrefix)))
+		http.FileServer(dir))
 }

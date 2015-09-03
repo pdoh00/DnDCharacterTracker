@@ -35,11 +35,11 @@ func (handler *WebServiceHandler) DisplayCharacter(w http.ResponseWriter, r *htt
 	vars := mux.Vars(r)
 
 	characterID, err := strconv.Atoi(vars["characterID"])
-	fmt.Printf("Display character with id %d", characterID)
+	fmt.Printf("Display character with id %d\n", characterID)
 	if err != nil {
 		panic(err)
 	}
 	character := handler.CharacterInteractor.RetrieveCharacter(characterID)
-	fmt.Printf("Character retrieved with name %s", character.CharacterName)
+	fmt.Printf("Character retrieved:\n%s\n", character.ToString())
 	handler.Templates.ExecuteTemplate(w, "character.html", character)
 }

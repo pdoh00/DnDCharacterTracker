@@ -10,8 +10,9 @@ type DBHandler interface {
 
 // Row is a generic interface for the result of a DBHandler operation
 type Row interface {
-	Scan(dest ...interface{})
+	Scan(dest ...interface{}) error
 	Next() bool
+	Close()
 }
 
 //DBRepo is the generic definition of a database repository

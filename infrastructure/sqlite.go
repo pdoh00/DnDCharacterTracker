@@ -22,8 +22,8 @@ type SqliteRow struct {
 
 // Scan reads values into given paramaters
 //e.g. Scan(&id, &some_field1, &some_field2)
-func (r *SqliteRow) Scan(dest ...interface{}) {
-	r.Rows.Scan(dest)
+func (r *SqliteRow) Scan(dest ...interface{}) error {
+	return r.Rows.Scan(dest...)
 }
 
 // Next iterates to the next row result.
@@ -32,8 +32,14 @@ func (r *SqliteRow) Next() bool {
 	return r.Rows.Next()
 }
 
+func (r *SqliteRow) Close() {
+	r.Rows.Close()
+}
+
 // Execute performs the sql statement in a transaction
 func (handler *SqliteHandler) Execute(statement string) (r sql.Result, e error) {
+	fmt.Println(statement)
+
 	tx, err := handler.Conn.Begin()
 	if err != nil {
 		panic(err)
@@ -55,11 +61,13 @@ func (handler *SqliteHandler) Execute(statement string) (r sql.Result, e error) 
 
 // Query performs the given statement on the DB
 func (handler *SqliteHandler) Query(statement string) interfaces.Row {
+	fmt.Println(statement)
 	rows, err := handler.Conn.Query(statement)
 	if err != nil {
 		fmt.Println(err)
 		return new(SqliteRow)
 	}
+	// defer rows.Close()
 	row := new(SqliteRow)
 	row.Rows = rows
 	return row
