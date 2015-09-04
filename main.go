@@ -53,13 +53,17 @@ func main() {
 		"last_name text)")
 
 	dbHandler.Execute("create table IF NOT EXISTS users (id integer not null primary key," +
-		"email text," +
+		"email text not null," +
+		"password text not null," +
 		"isAdmin integer)")
 
 	handlers := make(map[string]interfaces.DBHandler)
 	handlers[interfaces.DBUserRepoID] = dbHandler
 	handlers[interfaces.DBPlayerRepoID] = dbHandler
 	handlers[interfaces.DBCharacterRepoID] = dbHandler
+
+	userInteractor := new(usecases.UserInteractor)
+	userInteractor.UserRepository = interfaces.NewDBUserRepo(handlers)
 
 	characterInteractor := new(usecases.CharacterInteractor)
 	characterInteractor.CharacterRepository = interfaces.NewDBCharacterRepo(handlers)
@@ -85,6 +89,7 @@ func main() {
 	characterInteractor.UserRepository = interfaces.NewDBUserRepo(handlers)
 
 	webserviceHandler := interfaces.WebServiceHandler{}
+	webserviceHandler.UserInteractor = userInteractor
 	webserviceHandler.CharacterInteractor = characterInteractor
 	webserviceHandler.Templates = cachedTemplates
 
@@ -98,7 +103,7 @@ func main() {
 			},
 		},
 		interfaces.Route{
-			Name:    "Login",
+			Name:    "LoginPage",
 			Pattern: "/profile/login",
 			Method:  "GET",
 			HandlerFunc: func(w http.ResponseWriter, r *http.Request) {
@@ -106,11 +111,27 @@ func main() {
 			},
 		},
 		interfaces.Route{
-			Name:    "SignUp",
+			Name:    "Login",
+			Pattern: "/profile/login",
+			Method:  "POST",
+			HandlerFunc: func(w http.ResponseWriter, r *http.Request) {
+				webserviceHandler.AuthenticateUserAndRedirect(w, r)
+			},
+		},
+		interfaces.Route{
+			Name:    "SignUpPage",
 			Pattern: "/profile/signup",
 			Method:  "GET",
 			HandlerFunc: func(w http.ResponseWriter, r *http.Request) {
 				webserviceHandler.DisplaySignUpPage(w, r)
+			},
+		},
+		interfaces.Route{
+			Name:    "SignUp",
+			Pattern: "/profile/signup",
+			Method:  "POST",
+			HandlerFunc: func(w http.ResponseWriter, r *http.Request) {
+				webserviceHandler.CreateNewUser(w, r)
 			},
 		},
 		interfaces.Route{

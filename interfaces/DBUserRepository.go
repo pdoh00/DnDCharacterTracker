@@ -24,7 +24,8 @@ func NewDBUserRepo(dbHandlers map[string]DBHandler) *DBUserRepo {
 
 // Store persists a usecases.User to the data store
 func (repo *DBUserRepo) Store(user usecases.User) error {
-	repo.dbHandler.Execute(fmt.Sprintf("INSERT INTO users (id, email, is_admin) VALUES (%d, %s, %v)", user.ID, user.Email, user.IsAdmin))
+	repo.dbHandler.Execute(fmt.Sprintf("INSERT INTO users (id, email, password, isAdmin) VALUES (%d, '%s','%s', %d)",
+		user.ID, user.Email, user.Password, btoi(user.IsAdmin)))
 	//playerRepo
 	//playerRepo
 	return nil
@@ -32,9 +33,19 @@ func (repo *DBUserRepo) Store(user usecases.User) error {
 
 // FindByEmail a user by email
 func (repo *DBUserRepo) FindByEmail(email string) usecases.User {
-	row := repo.dbHandler.Query(fmt.Sprintf("SELECT id, is_admin FROM users WHERE email = %s", email))
+	row := repo.dbHandler.Query(fmt.Sprintf("SELECT id, password, isAdmin FROM users WHERE email = '%s'", email))
 	var isAdmin bool
 	var id int
-	row.Scan(&isAdmin, &id)
-	return usecases.User{ID: id, IsAdmin: isAdmin}
+	var password string
+	row.Next()
+	row.Scan(&id, &password, &isAdmin)
+	fmt.Printf("pw in repo is %s\n", password)
+	return usecases.User{ID: id, Email: email, Password: password, IsAdmin: isAdmin}
+}
+
+func btoi(b bool) int {
+	if b {
+		return 1
+	}
+	return 0
 }

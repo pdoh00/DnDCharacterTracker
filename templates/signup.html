@@ -7,9 +7,29 @@
     <link rel="stylesheet" type="text/css" href="/static/css/main.css">
 </head>
 
-<body>
-	<h1>Sign up</h1>
+<body class="profile-signup">
+	<section class="signup">
+		<form id="login-form" action method="post" accept-charset="utf-8">
+			<h1>Login</h1>
+			<fieldset class="input-group">
+				<label for="display-name-input" class="input-label">Name</label>
+				<input id="display-name-input" type="text" name="display_name">
+			</fieldset>
+			<fieldset class="input-group">
+				<label for="email-input" class="input-label">Email</label>
+				<input id="email-input" type="email" name="email">
+			</fieldset>
+			<fieldset class="input-group">
+				<label for="password-input" class="input-label">Password</label>
+				<input id="password-input" type="password" name="password">
+			</fieldset>
 
+			<div class="button-container">
+				<button class="button submit">Submit<span class="spinner"></span></button>
+				<a href="/profile/login" class="btn-secondary">Need an account?</a>
+			</div>
+		</form>
+	</section>
 </body>
 
 </html>

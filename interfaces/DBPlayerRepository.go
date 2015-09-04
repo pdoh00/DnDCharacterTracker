@@ -24,7 +24,7 @@ func NewDBWotCPlayerRepo(dbHandlers map[string]DBHandler) *DBWotCPlayerRepo {
 
 // Store persists a usecases.User to the data store
 func (repo *DBWotCPlayerRepo) Store(player domain.WotCPlayer) error {
-	repo.dbHandler.Execute(fmt.Sprintf("INSERT INTO wotcplayer (first_name, last_name, dci) VALUES (%s, %s, %s)",
+	repo.dbHandler.Execute(fmt.Sprintf("INSERT INTO wotcplayer (first_name, last_name, dci) VALUES ('%s', '%s', '%s')",
 		player.FirstName, player.LastName, player.DCI))
 	return nil
 }

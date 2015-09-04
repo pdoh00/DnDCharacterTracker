@@ -19,9 +19,17 @@ type CharacterInteractor interface {
 	RetrieveCharacter(characterID int) domain.Character
 }
 
+// UserInteractor defines methods available on a concrete UserInteractor
+type UserInteractor interface {
+	Add(email string, password string) error
+	// Returns nil if authentication is successful err otherwise
+	Authenticate(email string, password string) error
+}
+
 // WebServiceHandler is used to handle all http requests
 type WebServiceHandler struct {
 	CharacterInteractor CharacterInteractor
+	UserInteractor      UserInteractor
 	Templates           *template.Template
 }
 
@@ -35,9 +43,32 @@ func (handler *WebServiceHandler) DisplayLoginPage(w http.ResponseWriter, r *htt
 	handler.Templates.ExecuteTemplate(w, "login.html", nil)
 }
 
+// AuthenticateUserAndRedirect and redirects to appropriate pages
+func (handler *WebServiceHandler) AuthenticateUserAndRedirect(w http.ResponseWriter, r *http.Request) {
+	email := r.FormValue("email")
+	password := r.FormValue("password")
+	err := handler.UserInteractor.Authenticate(email, password)
+	if err != nil {
+		//redirect to login page
+		//TODO: add .Error to page and pass into template
+		errorData := struct{ Error string }{"Invalid user name or password"}
+		handler.Templates.ExecuteTemplate(w, "login.html", errorData)
+	} else {
+		handler.DisplayPlayerPage(w, r)
+	}
+}
+
 // DisplaySignUpPage handles a request for the sign up page
 func (handler *WebServiceHandler) DisplaySignUpPage(w http.ResponseWriter, r *http.Request) {
 	handler.Templates.ExecuteTemplate(w, "signup.html", nil)
+}
+
+// CreateNewUser handles a request from the sign up page to create a new user
+func (handler *WebServiceHandler) CreateNewUser(w http.ResponseWriter, r *http.Request) {
+	//TODO: Checkout using gorilla schema to bind form values to user values
+	email := r.FormValue("email")
+	password := r.FormValue("password")
+	handler.UserInteractor.Add(email, password)
 }
 
 // DisplayPlayerPage handles a request for the character creation page
