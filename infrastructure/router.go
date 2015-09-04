@@ -2,7 +2,6 @@ package infrastructure
 
 import (
 	"net/http"
-	"os"
 
 	"github.com/gorilla/mux"
 	"github.com/pdoh00/dndAdventuresLeague/interfaces"
@@ -10,25 +9,13 @@ import (
 
 // NewRouter creates a new mux router
 func NewRouter(routes []interfaces.Route) *mux.Router {
-	rootdir, err := os.Getwd()
-	if err != nil {
-		panic(err)
-	}
 
 	router := mux.NewRouter().StrictSlash(true)
 
 	//TODO Figure out how to handle these in the Route object
 	router.
 		PathPrefix("/static/").
-		Handler(WebLogger(prefixHandler(rootdir, "/static/"), "/static/"))
-
-	// router.
-	// 	PathPrefix("/static/css/").
-	// 	Handler(WebLogger(prefixHandler(rootdir, "/static/css/"), "/static/css/"))
-
-	// router.
-	// 	PathPrefix("/static/js/").
-	// 	Handler(WebLogger(prefixHandler(rootdir, "/static/js/"), "/static/js/"))
+		Handler(WebLogger(http.StripPrefix("/static/", http.FileServer(http.Dir("./static/"))), "Static Resource"))
 
 	for _, route := range routes {
 		var handler http.Handler
@@ -43,11 +30,4 @@ func NewRouter(routes []interfaces.Route) *mux.Router {
 			Handler(handler)
 	}
 	return router
-}
-
-func prefixHandler(rootdir string, routePrefix string) http.Handler {
-	dir := http.Dir(rootdir + routePrefix)
-	return http.
-		StripPrefix(routePrefix,
-		http.FileServer(dir))
 }
