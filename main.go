@@ -68,7 +68,7 @@ func main() {
 		Class:         "Fighter",
 		Level:         1,
 		Background:    "Folk Hero",
-		PlayerName:    "Greg",
+		PlayerName:    "Phil",
 		Faction:       "Harpers",
 		Race:          "Human",
 		Alignment:     "Lawful Good",
@@ -94,7 +94,39 @@ func main() {
 			Pattern: "/",
 			Method:  "GET",
 			HandlerFunc: func(w http.ResponseWriter, r *http.Request) {
+				webserviceHandler.DisplayHomePage(w, r)
+			},
+		},
+		interfaces.Route{
+			Name:    "Login",
+			Pattern: "/profile/login",
+			Method:  "GET",
+			HandlerFunc: func(w http.ResponseWriter, r *http.Request) {
 				webserviceHandler.DisplayLoginPage(w, r)
+			},
+		},
+		interfaces.Route{
+			Name:    "SignUp",
+			Pattern: "/profile/signup",
+			Method:  "GET",
+			HandlerFunc: func(w http.ResponseWriter, r *http.Request) {
+				webserviceHandler.DisplaySignUpPage(w, r)
+			},
+		},
+		interfaces.Route{
+			Name:    "Player",
+			Pattern: "/player/{playerID}",
+			Method:  "GET",
+			HandlerFunc: func(w http.ResponseWriter, r *http.Request) {
+				webserviceHandler.DisplayPlayerPage(w, r)
+			},
+		},
+		interfaces.Route{
+			Name:    "Character",
+			Pattern: "/character/create",
+			Method:  "GET",
+			HandlerFunc: func(w http.ResponseWriter, r *http.Request) {
+				webserviceHandler.DisplayCreateCharacterPage(w, r)
 			},
 		},
 		interfaces.Route{
@@ -102,7 +134,7 @@ func main() {
 			Pattern: "/character/{characterID}",
 			Method:  "GET",
 			HandlerFunc: func(w http.ResponseWriter, r *http.Request) {
-				webserviceHandler.DisplayCharacter(w, r)
+				webserviceHandler.DisplayCharacterPage(w, r)
 			},
 		},
 	}
@@ -110,11 +142,11 @@ func main() {
 	router := infrastructure.NewRouter(routes)
 	config := &tls.Config{MinVersion: tls.VersionTLS10}
 	server := &http.Server{
-		Addr:      ":8080",
+		Addr:      ":8081",
 		Handler:   router,
 		TLSConfig: config,
 	}
 
 	//TODO: Change to TLS
-	log.Fatal(server.ListenAndServe())
+	log.Fatal(server.ListenAndServeTLS("cert.pem", "key.pem"))
 }

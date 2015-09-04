@@ -60,7 +60,7 @@ func (repo *DBCharacterRepo) FindByDCI(dci string) []domain.Character {
 	defer row.Close()
 	var characters []domain.Character
 	for row.Next() {
-		characters = append(characters, parseCharacter(&row))
+		characters = append(characters, parseCharacter(row))
 	}
 	return characters
 }

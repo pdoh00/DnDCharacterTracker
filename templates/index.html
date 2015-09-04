@@ -8,14 +8,19 @@
 </head>
 
 <body>
-    <div class="image">
-        <img src="./static/img/welcome_background.jpg" alt="Cannot load image" style="width: 100%">
-        <h1 id="index_heading"><span>Welcome!</span></h1>
-        <form id="login_form">
-            Email: <input type="text" name="email"> 
-            Password: <input type="text" name="password">
-            <input type="submit" value="Log in or Sign up"></input>
-        </form>
+    <div id="container-page">
+        <div class="viewport">
+            <header class="site-nav">
+                <nav>
+                    <a href="/profile/login">Login</a>
+                    <a href="/profile/signup">Sign Up</a>
+                </nav>
+            </header>
+            <div class="image">
+                <img src="./static/img/welcome_background.jpg" alt="Cannot load image" style="width: 100%">
+                <h1 id="index_heading"><span>D&D Adventurer's League Tracker</span></h1>
+            </div>
+        </div>
     </div>
 </body>
 

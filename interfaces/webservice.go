@@ -25,13 +25,33 @@ type WebServiceHandler struct {
 	Templates           *template.Template
 }
 
-// DisplayLoginPage handles a request for the login page
-func (handler *WebServiceHandler) DisplayLoginPage(w http.ResponseWriter, r *http.Request) {
+// DisplayHomePage handles a request for the home page
+func (handler *WebServiceHandler) DisplayHomePage(w http.ResponseWriter, req *http.Request) {
 	handler.Templates.ExecuteTemplate(w, "index.html", nil)
 }
 
-// DisplayCharacter handles a request to show character data
-func (handler *WebServiceHandler) DisplayCharacter(w http.ResponseWriter, r *http.Request) {
+// DisplayLoginPage handles a request for the login page
+func (handler *WebServiceHandler) DisplayLoginPage(w http.ResponseWriter, r *http.Request) {
+	handler.Templates.ExecuteTemplate(w, "login.html", nil)
+}
+
+// DisplaySignUpPage handles a request for the sign up page
+func (handler *WebServiceHandler) DisplaySignUpPage(w http.ResponseWriter, r *http.Request) {
+	handler.Templates.ExecuteTemplate(w, "signup.html", nil)
+}
+
+// DisplayPlayerPage handles a request for the character creation page
+func (handler *WebServiceHandler) DisplayPlayerPage(w http.ResponseWriter, r *http.Request) {
+	handler.Templates.ExecuteTemplate(w, "player.html", nil)
+}
+
+// DisplayCreateCharacterPage handles a request for the character creation page
+func (handler *WebServiceHandler) DisplayCreateCharacterPage(w http.ResponseWriter, r *http.Request) {
+	handler.Templates.ExecuteTemplate(w, "createCharacter.html", nil)
+}
+
+// DisplayCharacterPage handles a request to show character data
+func (handler *WebServiceHandler) DisplayCharacterPage(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
 	characterID, err := strconv.Atoi(vars["characterID"])

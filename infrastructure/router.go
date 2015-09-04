@@ -1,7 +1,6 @@
 package infrastructure
 
 import (
-	"fmt"
 	"net/http"
 	"os"
 
@@ -20,16 +19,16 @@ func NewRouter(routes []interfaces.Route) *mux.Router {
 
 	//TODO Figure out how to handle these in the Route object
 	router.
-		PathPrefix("/static/img/").
-		Handler(WebLogger(prefixHandler(rootdir, "/static/img/"), "/static/img/"))
+		PathPrefix("/static/").
+		Handler(WebLogger(prefixHandler(rootdir, "/static/"), "/static/"))
 
-	router.
-		PathPrefix("/static/css/").
-		Handler(WebLogger(prefixHandler(rootdir, "/static/css/"), "/static/css/"))
+	// router.
+	// 	PathPrefix("/static/css/").
+	// 	Handler(WebLogger(prefixHandler(rootdir, "/static/css/"), "/static/css/"))
 
-	router.
-		PathPrefix("/static/js/").
-		Handler(WebLogger(prefixHandler(rootdir, "/static/js/"), "/static/js/"))
+	// router.
+	// 	PathPrefix("/static/js/").
+	// 	Handler(WebLogger(prefixHandler(rootdir, "/static/js/"), "/static/js/"))
 
 	for _, route := range routes {
 		var handler http.Handler
@@ -48,7 +47,6 @@ func NewRouter(routes []interfaces.Route) *mux.Router {
 
 func prefixHandler(rootdir string, routePrefix string) http.Handler {
 	dir := http.Dir(rootdir + routePrefix)
-	fmt.Println(dir)
 	return http.
 		StripPrefix(routePrefix,
 		http.FileServer(dir))
